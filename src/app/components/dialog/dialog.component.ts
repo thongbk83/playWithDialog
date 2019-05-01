@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 
-import { IPromiseResult } from "../../model/IPromiseResult";
+import { IPromiseResult, ResultDialog } from "../../model/IPromiseResult";
 
 declare var $: any;
 
@@ -10,7 +10,7 @@ declare var $: any;
   styleUrls: ["./dialog.component.css"]
 })
 export class DialogComponent implements IPromiseResult {
-  private _result: Promise<any>;
+  private _result: Promise<ResultDialog>;
   private _resolve: any;
   private _reject: any;
 
@@ -38,16 +38,20 @@ export class DialogComponent implements IPromiseResult {
     });
   }
 
-  get result(): Promise<any> {
+  get result(): Promise<ResultDialog> {
     return this._result;
   }
 
   clicked(ok: boolean) {
     $("#dialog").igDialog("close");
+    const resultDialog: ResultDialog = {
+      resultCode: "OK",
+      resultData: {}
+    };
     if (ok) {
-      this._resolve();
+      this._resolve(resultDialog);
     } else {
-      this._reject();
+      this._reject(resultDialog);
     }
   }
 }

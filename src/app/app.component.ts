@@ -9,6 +9,7 @@ import { BrowserModule } from "@angular/platform-browser";
 
 import { ShowPopupService } from "./services/showPopupService.service";
 import { DialogComponent } from "./components/dialog/dialog.component";
+import { ResultDialog } from "./model/IPromiseResult";
 
 @Component({
   selector: "app-root",
@@ -18,21 +19,21 @@ import { DialogComponent } from "./components/dialog/dialog.component";
 export class AppComponent {
   title = "demoangular";
 
-  @ViewChild("dialog", { read: ViewContainerRef })
-  viewContainerRef: ViewContainerRef;
+  // @ViewChild("dialog", { read: ViewContainerRef })
+  // viewContainerRef: ViewContainerRef;
 
   //constructor(service: Service, viewContainerRef: ViewContainerRef) {
   constructor(protected service: ShowPopupService) {}
 
   ngOnInit() {
-    this.service.setRootViewContainerRef(this.viewContainerRef);
+    // this.service.setRootViewContainerRef(this.viewContainerRef);
   }
 
   showDialog() {
     this.service
-      .addDialogComponent()
-      .then(data => {
-        alert("Logged in! Status:");
+      .showConfirmDialog()
+      .then((data: ResultDialog) => {
+        alert("Logged in! Status:" + data.resultCode);
         this.destroy();
       })
       .catch(error => {
@@ -42,6 +43,6 @@ export class AppComponent {
   }
 
   private destroy(): void {
-    this.viewContainerRef.clear();
+    //this.viewContainerRef.clear();
   }
 }
